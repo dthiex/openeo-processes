@@ -1,0 +1,96 @@
+{
+    "id": "add_labels",
+    "summary": "Adds new labels with new values",
+    "description": "Adds one or more new labels with newly computed values to the given `dimension`.",
+    "categories": [
+        "cubes"
+    ],
+    "parameters": [
+        {
+            "name": "data",
+            "description": "A data cube to add the dimension to.",
+            "schema": {
+                "type": "object",
+                "subtype": "raster-cube"
+            }
+        },
+        {
+            "name": "process",
+            "description": "Process to be applied on pixel values. The specified process needs to accept an array and must return an array with exactly the number of elements that are given to the parameters `labels`. A process may consist of multiple sub-processes.",
+            "schema": {
+                "type": "object",
+                "subtype": "process-graph",
+                "parameters": [
+                    {
+                        "name": "data",
+                        "description": "A labeled array with elements of any type.",
+                        "schema": {
+                            "type": "array",
+                            "subtype": "labeled-array",
+                            "items": {
+                                "description": "Any data type."
+                            }
+                        }
+                    },
+                    {
+                        "name": "context",
+                        "description": "Additional data passed by the user.",
+                        "schema": {
+                            "description": "Any data type."
+                        },
+                        "optional": true,
+                        "default": null
+                    }
+                ],
+                "returns": {
+                    "description": "The value to be set in the new data cube.",
+                    "schema": {
+                        "description": "Any data type."
+                    }
+                }
+            }
+        },
+        {
+            "name": "labels",
+            "description": "The name of the dimension over which to reduce. Fails with a `LabelExists` exception if one of the specified label exists already.",
+            "schema": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                    "type": "string"
+                }
+            }
+        },
+        {
+            "name": "dimension",
+            "description": "The name of the dimension to apply the process on and to add the labels to. Fails with a `DimensionNotAvailable` exception if the specified dimension does not exist.",
+            "schema": {
+                "type": "string"
+            }
+        },
+        {
+            "name": "context",
+            "description": "Additional data to be passed to the process.",
+            "schema": {
+                "description": "Any data type."
+            },
+            "optional": true,
+            "default": null
+        }
+    ],
+    "returns": {
+        "description": "The data cube with a newly added dimension. The new dimension has exactly one dimension label. All other dimensions remain unchanged.",
+        "schema": {
+            "type": "object",
+            "subtype": "raster-cube"
+        }
+    },
+    "exceptions": {
+        "DimensionExists": {
+            "message": "A dimension with the specified name already exists."
+        },
+        "LabelExists": {
+            "message": "A label with the specified name already exists."
+        }
+    }
+}

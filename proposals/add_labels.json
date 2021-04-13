@@ -1,0 +1,53 @@
+{
+    "id": "add_labels",
+    "summary": "Adds new labels to a dimension.\n\nThis is especially useful to compute new bands with ``apply_dimension()``.",
+    "description": "Adds one or more new labels to the given `dimension`.",
+    "categories": [
+        "cubes"
+    ],
+    "parameters": [
+        {
+            "name": "data",
+            "description": "A data cube to add the dimension to.",
+            "schema": {
+                "type": "object",
+                "subtype": "raster-cube"
+            }
+        },
+        {
+            "name": "labels",
+            "description": "The name of the dimension over which to reduce. Fails with a `LabelExists` exception if one of the specified label exists already.",
+            "schema": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                    "type": "string"
+                }
+            }
+        },
+        {
+            "name": "value",
+            "description": "The value to set for the given labels. Defaults to `null` (no-data).",
+            "schema": {
+                "description": "Any data type."
+            },
+            "default": null,
+            "optional": true
+        }
+    ],
+    "returns": {
+        "description": "The data cube with a newly added dimension. The new dimension has exactly one dimension label. All other dimensions remain unchanged.",
+        "schema": {
+            "type": "object",
+            "subtype": "raster-cube"
+        }
+    },
+    "exceptions": {
+        "DimensionExists": {
+            "message": "A dimension with the specified name already exists."
+        },
+        "LabelExists": {
+            "message": "A label with the specified name already exists."
+        }
+    }
+}
